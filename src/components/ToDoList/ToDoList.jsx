@@ -6,6 +6,7 @@ export default class Todolist extends React.Component{
   render(){
 
     const {todoDate, onDlt} = this.props;
+
     const toDoElements = todoDate.map((item) =>{
     const {id} = item;
 

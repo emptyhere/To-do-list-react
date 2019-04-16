@@ -3,8 +3,12 @@ import ReactDOM from 'react-dom';
 import Todolist from './components/ToDoList/ToDoList';
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
+import AddItem from './components/AddItem/AddItem';
 
-class App extends React.Component{
+
+class App extends React.Component{  
+    
+   genId = 10;
    state= { todoDate:[
         {text: 'lolus',  id:1},
         {text: 'kekus',  id:2},
@@ -22,8 +26,24 @@ const newArr = [...todoDate.slice(0, idIdx),
 
 return{
     todoDate: newArr
-};
+      };
+    });
+   };
+
+   addItm = (text,id) => {
+this.setState(({ todoDate }) => {
+    
+    const newArrSec = [...todoDate.slice()
+        .concat({text: 'testum',  id:this.genId++})
+        
+    ];
+
+    return{
+        todoDate:newArrSec
+    };
 });
+console.log(this.genId);
+console.log(this.state);
    };
 
 render(){
@@ -32,6 +52,7 @@ render(){
     <Header />
     <Search />
     <Todolist todoDate={this.state.todoDate} onDlt={this.dltItm} />
+    <AddItem onAdd={this.addItm} />
 </div>
 )
 };
