@@ -25,7 +25,7 @@ state = {
  };
 
     render(){
-     const {text} = this.props;
+     const {text, onDlt} = this.props;
      const {done, important} = this.state;
 
 
@@ -47,7 +47,7 @@ state = {
             </span>
 
             <button onClick={this.onClickImportant}>Mark Import</button>
-            <button>Delete</button>
+            <button onClick={onDlt}>Delete</button>
             </span>
         );
     };
