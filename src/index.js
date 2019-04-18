@@ -8,13 +8,22 @@ import AddItem from './components/AddItem/AddItem';
 
 class App extends React.Component{  
     
-   genId = 10;
+   genId = 1;
    state= { todoDate:[
-        {text: 'lolus',  id:1},
-        {text: 'kekus',  id:2},
-        {text: 'testum',  id:3}
+        this.createItemData('kek'),
+        this.createItemData('kekus'),
+        this.createItemData('keksum'),
 ]
    };
+
+   createItemData(text) {
+    return{
+        text, 
+        done: false,
+        important: false, 
+        id:this.genId++
+    };
+       };
 
    dltItm = (id) => {
 this.setState(({ todoDate }) => {
@@ -30,33 +39,77 @@ return{
     });
    };
 
-   addItm = (text,id) => {
+
+
+   addItm = () => {
 this.setState(({ todoDate }) => {
-    
-    const newArrSec = [...todoDate.slice()
-        .concat({text: 'testum',  id:this.genId++})
-        
+
+    const newArrSec = [...todoDate
+        .concat(this.createItemData('test'))  
     ];
 
     return{
         todoDate:newArrSec
-    };
-});
-console.log(this.genId);
-console.log(this.state);
+     };
+    });
+   };
+
+   changeProperties(arr, id, prop){
+
+    const idIdx = arr.findIndex((el)=> el.id === id);
+    const oldItm = arr[idIdx];
+    const newItm = {...oldItm, 
+        [prop]: !oldItm[prop]};
+
+    return [
+        ...arr.slice(0, idIdx),
+        newItm,
+        ...arr.slice(idIdx + 1)
+       ];
+   };
+
+   onChangeImportant = (id) =>{
+       this.setState(({todoDate}) => {
+           return{
+               todoDate: this.changeProperties(todoDate, id, 
+                'important')
+           };
+       });
+   };
+
+   onChangeDone = (id) =>{
+       this.setState(({todoDate})=>{
+        return{
+            todoDate: this.changeProperties(todoDate, id, 
+             'done')
+          };
+       });
    };
 
 render(){
+
+    const doneCount = this.state.todoDate
+    .filter((el)=>el.done).length;
+
+    const todoCount = this.state.todoDate.length - doneCount;
+
     return(
 <div>
-    <Header />
+    <Header todoCount={todoCount} doneCount={doneCount} />
     <Search />
-    <Todolist todoDate={this.state.todoDate} onDlt={this.dltItm} />
-    <AddItem onAdd={this.addItm} />
+    <Todolist todoDate={this.state.todoDate} 
+    onDlt={this.dltItm}
+    onChImp={this.onChangeImportant}
+    onChDone={this.onChangeDone}
+    />
+
+    <AddItem onAdd={this.addItm} 
+    itmText={'text'}
+    />
+    
 </div>
 )
-};
-    
+  };   
 };
 
 

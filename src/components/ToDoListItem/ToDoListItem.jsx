@@ -3,30 +3,13 @@ import styles from './ToDoListItem.module.css';
 
 export default class TodolistItem extends React.Component {
 
-state = {
-    done: false,
-    important: false
-};
 
-    onClickText=()=> {
-        this.setState(({done}) => {
-            return{
-            done: !done
-            };
-        });
- };
 
- onClickImportant=()=>{
-     this.setState(({important})=>{
-         return{
-             important: !important
-         };
-     });
- };
 
     render(){
-     const {text, onDlt} = this.props;
-     const {done, important} = this.state;
+     const {text, onDlt, onChDone, onChImp, done,
+    important} = this.props;
+     
 
 
         let classNames = styles;
@@ -42,11 +25,11 @@ state = {
 
         return(
             <span>
-            <span onClick={this.onClickText} className={classNames} >
+            <span onClick={onChDone} className={classNames} >
             {text}
             </span>
 
-            <button onClick={this.onClickImportant}>Mark Import</button>
+            <button onClick={onChImp}>Mark Import</button>
             <button onClick={onDlt}>Delete</button>
             </span>
         );

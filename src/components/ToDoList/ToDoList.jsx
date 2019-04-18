@@ -5,14 +5,18 @@ export default class Todolist extends React.Component{
 
   render(){
 
-    const {todoDate, onDlt} = this.props;
+    const {todoDate, onDlt, onChImp, onChDone} = this.props;
 
     const toDoElements = todoDate.map((item) =>{
     const {id} = item;
 
         return (
           <li key={id} className='list-group-item'>
-            <TodolistItem {...item} onDlt={()=>onDlt(id)}/>
+            <TodolistItem {...item}
+            onDlt={()=>onDlt(id)}
+            onChImp={()=>onChImp(id)}
+            onChDone={()=>onChDone(id)}
+            />
           </li>
         );
       });
