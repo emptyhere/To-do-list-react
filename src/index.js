@@ -41,11 +41,11 @@ return{
 
 
 
-   addItm = () => {
+   addItm = (text) => {
 this.setState(({ todoDate }) => {
 
     const newArrSec = [...todoDate
-        .concat(this.createItemData('test'))  
+        .concat(this.createItemData(text))
     ];
 
     return{
