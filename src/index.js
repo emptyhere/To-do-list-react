@@ -4,6 +4,7 @@ import Todolist from './components/ToDoList/ToDoList';
 import Header from './components/Header/Header';
 import Search from './components/Search/Search';
 import AddItem from './components/AddItem/AddItem';
+import ItemFilter from './components/ItemFilter/ItemFilter';
 
 
 class App extends React.Component{  
@@ -15,7 +16,8 @@ class App extends React.Component{
         this.createItemData('keksum'),
 ],
 
-        searchData:''
+        searchData:'',
+        filt: 'all'
    };
 
    createItemData(text) {
@@ -92,6 +94,10 @@ this.setState(({ todoDate }) => {
         this.setState({searchData});
    };
 
+   onFiltCh= (filt) =>{
+    this.setState({filt});
+};
+
    search(items, searchData){
     if(searchData.length === 0){
         return items;
@@ -103,10 +109,25 @@ this.setState(({ todoDate }) => {
     });
    };
 
+   filt(items, filt){
+       switch(filt){
+           case 'all':
+            return items;
+           case 'active':
+            return items.filter((item)=> !item.done);
+           case 'done':
+            return items.filter((item)=> item.done);
+           default: 
+            return items;            
+
+       }
+   };
+
 
 render(){
-    const {todoDate, searchData} = this.state;
-    const visibleItems = this.search(todoDate, searchData);
+    const {todoDate, searchData, filt} = this.state;
+    const visibleItems = this.filt(
+        this.search(todoDate, searchData), filt);
 
     const doneCount = todoDate
     .filter((el)=>el.done).length;
@@ -116,6 +137,10 @@ render(){
     return(
 <div>
     <Header todoCount={todoCount} doneCount={doneCount} />
+    <ItemFilter 
+    filt={filt}
+    onFiltCh={this.onFiltCh}
+     />
     <Search onSearchCh={this.onSearchCh}/>
     <Todolist todoDate={visibleItems} 
     onDlt={this.dltItm}
