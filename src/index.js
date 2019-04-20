@@ -13,7 +13,9 @@ class App extends React.Component{
         this.createItemData('kek'),
         this.createItemData('kekus'),
         this.createItemData('keksum'),
-]
+],
+
+        searchData:''
    };
 
    createItemData(text) {
@@ -86,18 +88,36 @@ this.setState(({ todoDate }) => {
        });
    };
 
-render(){
+   onSearchCh = (searchData) =>{
+        this.setState({searchData});
+   };
 
-    const doneCount = this.state.todoDate
+   search(items, searchData){
+    if(searchData.length === 0){
+        return items;
+    }
+
+    return items.filter((item) => {
+        return item.text.toLowerCase()
+        .indexOf(searchData.toLowerCase()) > -1;
+    });
+   };
+
+
+render(){
+    const {todoDate, searchData} = this.state;
+    const visibleItems = this.search(todoDate, searchData);
+
+    const doneCount = todoDate
     .filter((el)=>el.done).length;
 
-    const todoCount = this.state.todoDate.length - doneCount;
+    const todoCount = todoDate.length - doneCount;
 
     return(
 <div>
     <Header todoCount={todoCount} doneCount={doneCount} />
-    <Search />
-    <Todolist todoDate={this.state.todoDate} 
+    <Search onSearchCh={this.onSearchCh}/>
+    <Todolist todoDate={visibleItems} 
     onDlt={this.dltItm}
     onChImp={this.onChangeImportant}
     onChDone={this.onChangeDone}
